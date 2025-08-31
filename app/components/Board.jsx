@@ -3,7 +3,7 @@ import '../css/Board.css'
 
 export default function Board({col, row}){
   const [tiles, setTiles] = useState(new Array(row).fill(
-    new Array(col).fill({covered: true, mine: false, id: 0})
+    new Array(col).fill({covered: true, mine: false, value: 0})
   ));
 
   return (
