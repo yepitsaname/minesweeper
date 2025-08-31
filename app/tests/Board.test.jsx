@@ -3,7 +3,6 @@ import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import Board from "../components/Board";
 import Tile from "../components/Tile";
-import { useState } from "react";
 
 describe("Game Board Tests", () => {
 

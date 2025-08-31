@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import '../css/Board.css'
 import Tile from "./Tile";
+import { setMines } from "../game_logic/main";
 
 /**
  * @param {Number} col
@@ -12,11 +13,7 @@ export default function Board({col, row, mines}){
     new Array(col).fill({covered: true, mine: false, value: 0})
   ));
 
-  useEffect(()=>{
-    let temp = tiles.map(e=>e);
-    temp[0][0].mine = true;
-    setTiles(temp)
-  },[])
+  useEffect(()=>{ setMines(tiles,mines,setTiles) },[])
 
   return (
     <div title="board">
