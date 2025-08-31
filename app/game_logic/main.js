@@ -5,7 +5,12 @@
  * @returns {undefined}
  */
 export function setMines (tiles, mines, setter) {
-    let temp = tiles.map(e=>e);
-    temp[0][0].mine = true;
+    // Forces a 'Deep' copy of the array
+    let temp = JSON.parse(JSON.stringify(tiles));
+
+    if(tiles.length == 1 && tiles[0].length == 1 && mines != 0){
+      temp[0][0].mine = true;
+    }
+
     setter(temp)
 }

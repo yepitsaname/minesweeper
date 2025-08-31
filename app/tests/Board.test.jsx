@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { userEvent } from '@testing-library/user-event';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import Board from "../components/Board";
 import Tile from "../components/Tile";
+import { setMines } from "../game_logic/main";
 
 describe("Game Board Tests", () => {
 
@@ -82,6 +83,7 @@ describe("Game Board Tests", () => {
         let tile = screen.getByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
+        expect(tile.classList.contains('mine')).toBe(false);
       })
 
       it("should reveal the mine tile when clicked", async () => {
@@ -89,13 +91,8 @@ describe("Game Board Tests", () => {
         let tile = screen.getByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
+        expect(tile.classList.contains('mine')).toBe(true);
       })
     })
-
-    describe("Tile revealing logic", ()=>{
-      it("should change it's value according to number of neighbor mines", () => {
-      })
-    })
-
   })
 })
