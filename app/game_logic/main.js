@@ -37,11 +37,11 @@ export function checkNeighbors(board, start) {
   var checked = state.map(row => row.map(()=> false));
 
   let [start_row,start_col] = start;
-  for( let row = start_row - 1; row % 4 != 3; row++ ){
+  for( let row = start_row - 1; row <= start_row + 1; row++ ){
     if( row < 0 ){ continue };
     if( row >= state.length ){ continue };
 
-    for( let col = start_col - 1; col % 4 != 3; col++ ){
+    for( let col = start_col - 1; col <= start_col + 1; col++ ){
       if( col < 0 ){ continue };
       if( col >= state[row].length ){ continue };
 
@@ -50,6 +50,6 @@ export function checkNeighbors(board, start) {
       if( state[row][col].mine ){ state[start_row][start_col].value++ }
     }
   }
-  console.log(state);
+
   return state;
 }

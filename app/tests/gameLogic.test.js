@@ -14,14 +14,23 @@ describe("Main Game Logic Suite", ()=>{
       expect(Array.isArray(endState[0])).toBe(true);
     })
     it("should identify and correctly count the number of mines in an array", ()=>{
-      const gameBoard = [
+      let gameBoard = [
         [{mine: true, value: 0},{mine: true, value: 0},{ mine: true, value: 0}],
         [{mine: true, value: 0},{mine: false, value: 0},{ mine: true, value: 0}],
         [{mine: true, value: 0},{mine: true, value: 0},{ mine: true, value: 0}]
       ];
+      expect(checkNeighbors(gameBoard, [1,1])[1][1].value).toBe(8);
 
-      let endState = checkNeighbors(gameBoard, [1,1]);
-      expect(endState[1][1].value).toBe(8);
+      gameBoard = [
+        [{mine: false, value: 0},{mine: true, value: 0},{ mine: true, value: 0}],
+        [{mine: true, value: 0},{mine: false, value: 0},{ mine: true, value: 0}],
+        [{mine: false, value: 0},{mine: true, value: 0},{ mine: false, value: 0}]
+      ];
+      expect(checkNeighbors(gameBoard, [1,1])[1][1].value).toBe(5);
+      expect(checkNeighbors(gameBoard, [0,0])[0][0].value).toBe(2);
+      expect(checkNeighbors(gameBoard, [2,0])[2][0].value).toBe(2);
+      expect(checkNeighbors(gameBoard, [2,2])[2][2].value).toBe(2);
+
     })
   })
 
