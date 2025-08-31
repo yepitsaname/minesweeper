@@ -13,7 +13,7 @@ export default function Board({col, row, mines}){
     new Array(col).fill({covered: true, mine: false, value: 0})
   ));
 
-  useEffect(()=>{ setMines(tiles,mines,setTiles) },[])
+  useEffect(()=>{ setTiles(setMines(tiles,mines)) },[])
 
   return (
     <div title="board">
