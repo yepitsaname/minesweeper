@@ -1,13 +1,13 @@
 import { useState } from "react";
 import '../css/Board.css'
 
-export default function Board(){
-  const [tiles, setTiles] = useState(new Array(10).fill(
-    new Array(10).fill({covered: true, mine: false, id: 0})
+export default function Board({col, row}){
+  const [tiles, setTiles] = useState(new Array(row).fill(
+    new Array(col).fill({covered: true, mine: false, id: 0})
   ));
 
   return (
-    <div>
+    <div title="board">
       {tiles.map((row, row_id) => {
         return (
           <div key={row_id} className="row">
