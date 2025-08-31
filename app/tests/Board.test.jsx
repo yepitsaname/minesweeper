@@ -3,6 +3,7 @@ import { userEvent } from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import Board from "../components/Board";
 import Tile from "../components/Tile";
+import { useState } from "react";
 
 describe("Game Board Tests", () => {
 
@@ -70,18 +71,30 @@ describe("Game Board Tests", () => {
         expect(tile.classList.contains('mine')).toBe(true);
       })
 
+      it("should not do anything when clicked if only a tile is rendered", async ()=>{
+        render(<Tile covered={false} mine={true} />);
+        let tile = screen.getByTitle("tile");
+        await userEvent.click(tile);
+        expect(tile.classList.contains('covered')).toBe(false);
+      })
+
       it("should reveal the non-mine tile when clicked", async () => {
-        render(<Tile covered={true} mine={false} />);
+        render(<Board row={1} col={1} mines={0} />);
         let tile = screen.getByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
       })
 
       it("should reveal the mine tile when clicked", async () => {
-        render(<Tile covered={true} mine={true} />);
+        render(<Board row={1} col={1} mines={1} />);
         let tile = screen.getByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
+      })
+    })
+
+    describe("Tile revealing logic", ()=>{
+      it("should change it's value according to number of neighbor mines", () => {
       })
     })
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import '../css/Board.css'
 import Tile from "./Tile";
 
@@ -7,17 +7,23 @@ import Tile from "./Tile";
  * @param {Number} row
  * @returns {import("react").JSXElementConstructor}
  */
-export default function Board({col, row}){
+export default function Board({col, row, mines}){
   const [tiles, setTiles] = useState(new Array(row).fill(
     new Array(col).fill({covered: true, mine: false, value: 0})
   ));
+
+  useEffect(()=>{
+    let temp = tiles.map(e=>e);
+    temp[0][0].mine = true;
+    setTiles(temp)
+  },[])
 
   return (
     <div title="board">
       {tiles.map((row, row_id) => {
         return (
           <div key={row_id} className="row">
-            {row.map((tile, tile_id) => <Tile key={tile_id} covered={tile.covered} mine={tile.mine} />)}
+            {row.map((tile, tile_id) => <Tile key={tile_id} covered={tile.covered} mine={tile.mine} value={tile.value} coord={[row_id,tile_id]} setter={setTiles} />)}
           </div>
         )
       })}
