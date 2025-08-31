@@ -1,5 +1,17 @@
+// Type Definitions
 /**
- * @param {Array} tiles
+ * @typedef {Object} Tile
+ * @property {Boolean} covered
+ * @property {Boolean} mine
+ * @property {Number} value
+ */
+/**
+ * @typedef {Array<Array<Tile>>} Board
+ */
+
+// Functions
+/**
+ * @param {Board} tiles
  * @param {Number} mines
  * @param {CallableFunction} setter
  * @returns {undefined}
@@ -13,4 +25,31 @@ export function setMines (tiles, mines, setter) {
     }
 
     setter(temp)
+}
+
+/**
+ * @param {Board} board
+ * @param {[row: number,column: number]} start
+ * @returns {Board}
+ */
+export function checkNeighbors(board, start) {
+  let state = JSON.parse(JSON.stringify(board));
+  var checked = state.map(row => row.map(()=> false));
+
+  let [start_row,start_col] = start;
+  for( let row = start_row - 1; row % 4 != 3; row++ ){
+    if( row < 0 ){ continue };
+    if( row >= state.length ){ continue };
+
+    for( let col = start_col - 1; col % 4 != 3; col++ ){
+      if( col < 0 ){ continue };
+      if( col >= state[row].length ){ continue };
+
+      checked[row][col] = true;
+      if( row == start_row && col == start_col ){ continue }
+      if( state[row][col].mine ){ state[start_row][start_col].value++ }
+    }
+  }
+  console.log(state);
+  return state;
 }
