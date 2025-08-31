@@ -5,7 +5,7 @@ export default function App() {
 
   return (
     <>
-      <Board col={5} row={5}/>
+      <Board col={10} row={10}/>
     </>
   )
 }

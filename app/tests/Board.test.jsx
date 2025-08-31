@@ -69,14 +69,21 @@ describe("Game Board Tests", () => {
         expect(tile.classList.contains('covered')).toBe(false);
         expect(tile.classList.contains('mine')).toBe(true);
       })
+
+      it("should reveal the non-mine tile when clicked", async () => {
+        render(<Tile covered={true} mine={false} />);
+        let tile = screen.getByTitle("tile");
+        await userEvent.click(tile);
+        expect(tile.classList.contains('covered')).toBe(false);
+      })
+
+      it("should reveal the mine tile when clicked", async () => {
+        render(<Tile covered={true} mine={true} />);
+        let tile = screen.getByTitle("tile");
+        await userEvent.click(tile);
+        expect(tile.classList.contains('covered')).toBe(false);
+      })
     })
 
-
-    it("should reveal the tile when clicked", async () => {
-      render(<Tile covered={true} mine={false} />);
-      let tile = screen.getByTitle("tile");
-      await userEvent.click(tile);
-      expect(tile.classList.contains('covered')).toBe(false);
-    })
   })
 })
