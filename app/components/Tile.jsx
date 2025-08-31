@@ -1,3 +1,6 @@
+import '../css/Tile.css';
+import { checkNeighbors } from '../game_logic/main';
+
 /**
  * @param {Boolean} covered
  * @param {Boolean} mine
@@ -11,17 +14,12 @@ export default function Tile({covered, mine, value, coord, setter=()=>{}}){
   return (
     <div
       title="tile"
-      className={`tile ${covered ? 'covered' : ''} ${mine ? 'mine' : ''}`}
+      className={`tile ${covered ? 'covered' : ''} ${mine && !covered ? 'mine' : ''}`}
       onClick={()=>{
-        setter(prevState=>{
-          let[row,col] = coord;
-          let temp = prevState.map(e=>e);
-          temp[row][col].covered = false;
-          return temp;
-        })
+        setter(prevState=>checkNeighbors(prevState,coord))
       }}
     >
-      {mine ? mine : value}
+      {mine ? mine : value == 0 ? '' : value}
     </div>
   )
 }

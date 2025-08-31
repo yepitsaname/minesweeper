@@ -39,6 +39,9 @@ describe("Game Board Tests", () => {
         expect(tiles.length).toBe(54);
       })
     })
+    // describe("Should correctly reveal all adjacent tiles from clicked non-mine tile", () => {
+    //   render(<Board />)
+    // })
   })
 
   describe("Tile Display and Functions", () => {
@@ -61,7 +64,7 @@ describe("Game Board Tests", () => {
         render(<Tile covered={true} mine={true} />);
         let tile = screen.getByTitle("tile");
         expect(tile.classList.contains('covered')).toBe(true);
-        expect(tile.classList.contains('mine')).toBe(true);
+        expect(tile.classList.contains('mine')).toBe(false);
       })
 
       it("should render an uncovered mine tile on the screen", () => {

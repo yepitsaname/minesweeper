@@ -17,7 +17,7 @@
  * @param {CallableFunction} setter
  * @returns {undefined}
  */
-export function setMines (board, totalMines, odds=0.4) {
+export function setMines (board, totalMines, odds=0.2) {
     // Forces a 'Deep' copy of the array
     let state = JSON.parse(JSON.stringify(board));
     var mineCount = 0;
@@ -33,7 +33,7 @@ export function setMines (board, totalMines, odds=0.4) {
           if( roll < row_odds && !state[row][col].mine ){
             state[row][col].mine = true;
             mineCount++;
-            row_odds = Math.round((row_odds - 0.05) * 100)/100;
+            row_odds = Math.round((row_odds - 0.1) * 100)/100;
           }
 
         }

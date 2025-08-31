@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import '../css/Board.css'
 import Tile from "./Tile";
 import { setMines } from "../game_logic/main";
+import '../css/Board.css';
 
 /**
  * @param {Number} col
