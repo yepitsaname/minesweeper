@@ -38,6 +38,30 @@ describe("Game Board Tests", () => {
         expect(tiles.length).toBe(54);
       })
     })
+
+    describe("should have a 'menu' while in a 'gameOver' state", ()=>{
+      it("should have a 'menu' by default", ()=>{
+        render(<Board />);
+        const menu = screen.getByTitle('menu');
+        expect(menu).toBeInTheDocument();
+      })
+
+      it("should have a 'You Win!' when the player wins", async ()=>{
+        render(<Board row={1} col={1} mines={0}/>);
+        const tile = screen.getByTitle('tile');
+        await userEvent.click(tile);
+        const menu = screen.getByText('You Won!');
+        expect(menu).toBeInTheDocument();
+      })
+
+      it("should have a 'You Lost!' when the player loses", async ()=>{
+        render(<Board row={1} col={1} mines={1}/>);
+        const tile = screen.getByTitle('tile');
+        await userEvent.click(tile);
+        const menu = screen.getByText('You Lost!');
+        expect(menu).toBeInTheDocument();
+      })
+    })
   })
 
   describe("Tile Display and Functions", () => {

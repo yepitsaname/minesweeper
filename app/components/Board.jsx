@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Tile from "./Tile";
-import { getUncoveredTileCount, setMines, setValues } from "../game_logic/main";
+import Menu from "./Menu";
+import { getUncoveredMineCount, getUncoveredTileCount, setMines, setValues } from "../game_logic/main";
 import '../css/Board.css';
 
 /**
@@ -13,10 +14,20 @@ export default function Board({col, row, mines}){
     new Array(col).fill({covered: true, mine: false, value: 0})
   ));
   const [uncoveredSquares, setUncoveredSquares] = useState(0)
+  const [hitMine, setHitMine] = useState(false);
+  const [gameOver, setGameOver] = useState(true);
 
   useEffect(()=>{ setTiles(setValues(setMines(tiles,mines))) },[])
-  useEffect(()=>{ setUncoveredSquares(getUncoveredTileCount(tiles)) },[tiles])
 
+  useEffect(()=>{
+    setUncoveredSquares(getUncoveredTileCount(tiles));
+    setHitMine(getUncoveredMineCount(tiles) >= 1);
+  },[tiles])
+
+  useEffect(()=>{
+    if(hitMine == true){ setGameOver(true)
+    } else if ( uncoveredSquares == col * row - mines ){ setGameOver(true) }
+  },[uncoveredSquares,hitMine])
 
   return (
     <div title="board">
@@ -27,6 +38,12 @@ export default function Board({col, row, mines}){
           </div>
         )
       })}
+      {gameOver == true ?
+        (<div title="board mask" className="mask">
+          { uncoveredSquares == 0 ? <Menu state={0} /> : !hitMine ? <Menu state={1} /> : <Menu state={2} />}
+        </div>) :
+        <></>
+      }
     </div>
   )
 }
