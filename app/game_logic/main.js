@@ -12,6 +12,7 @@
 
 // Functions
 /**
+ * Takes in a given board and places mines randomly. Returns the mined board.
  * @param {Board} board
  * @param {Number} totalMines
  * @param {CallableFunction} setter
@@ -46,6 +47,35 @@ export function setMines (board, totalMines, odds=0.2) {
 }
 
 /**
+ * Takes in a given mined board and updates all tiles with the total neighboring mines. Returns the board with values.
+ * @param {Board} board
+ * @returns {Board}
+ */
+export function setValues (board){
+  // Force deep copy of board
+  let state = JSON.parse(JSON.stringify(board));
+
+  const fn = (start_row,start_col)=>{
+    if(state[start_row][start_col].mine){return}
+    for(let row = start_row - 1; row <= start_row + 1; row++ ){
+      if( row < 0 || row >= state.length ){ continue }
+      for(let col = start_col - 1; col <= start_col + 1; col++ ){
+        if( col < 0 || col >= state[row].length ){ continue }
+        if( state[row][col].mine == true ){ state[start_row][start_col].value++ }
+      }
+    }
+  }
+
+  state.forEach((row,ri)=>{
+    row.forEach((col,ci)=>{
+      fn(ri,ci)
+    })
+  });
+  return state;
+}
+
+/**
+ * Takes in a given board and clears all direct adjacents recursively, then returns the board
  * @param {Board} board
  * @param {[row: number,column: number]} start
  * @returns {Board}
@@ -75,18 +105,9 @@ export function checkNeighbors(board, start) {
         //If the row and column are the starting point, mark it as checked
         if( row == start_row && col == start_col ){ continue }
 
-        //If the row and column are a mine, update the mine count for the start tile
-        if( state[row][col].mine ){ state[start_row][start_col].value++ }
-
-        //If the row and column are direct neighbors
-        if(
-          (row == start_row && (col == start_col - 1 || col == start_col + 1)) ||
-          (col == start_col && (row == start_row - 1 || row == start_row + 1))
-        ){
-          //Validate if they have been checked and are not mines, if both are true, recurse
-          if( state[row][col].covered && !state[row][col].mine ){
-            fn(row,col);
-          }
+        //Validate if they have been checked, are not mines, and the starting point value was 0; if all are true, recurse
+        if( state[row][col].covered && !state[row][col].mine &&  state[start_row][start_col].value == 0){
+          fn(row,col);
         }
       }
     }

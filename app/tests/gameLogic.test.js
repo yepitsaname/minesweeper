@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { setMines, checkNeighbors, revealBoard } from "../game_logic/main.js"
+import { setMines, checkNeighbors, revealBoard, setValues } from "../game_logic/main.js"
 
 describe("Main Game Logic Suite", ()=>{
   describe("Logic: setMines", ()=>{
@@ -42,6 +42,29 @@ describe("Main Game Logic Suite", ()=>{
     })
   })
 
+  describe("Logic: setValues", ()=>{
+    it("should return an array of arrays", ()=> {
+      const board = setValues([[{covered: true, mine: false, value: 0}]]);
+      expect(Array.isArray(board)).toBe(true);
+      expect(Array.isArray(board[0])).toBe(true);
+    })
+
+    it("should accurately set all count values", ()=>{
+      const gameBoard = [
+        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}],
+        [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
+        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
+      ];
+
+      let board = setValues(gameBoard)
+      expect(board[0][0].value).toBe(1);
+      expect(board[1][0].value).toBe(2);
+      expect(board[1][1].value).toBe(4);
+      expect(board[2][0].value).toBe(1);
+      expect(board[2][2].value).toBe(2);
+    })
+  })
+
   describe("Logic: checkNeighbors", ()=>{
     it("should return an array of arrays", ()=> {
       const board = checkNeighbors([[{covered: true, mine: false, value: 0}]], [0,0]);
@@ -49,79 +72,24 @@ describe("Main Game Logic Suite", ()=>{
       expect(Array.isArray(board[0])).toBe(true);
     })
 
-    it("should identify and correctly count the number of mines in an array", ()=>{
+    it("should uncover all 'checked' non-mine tiles without values up to one node away", ()=>{
       const gameBoard = [
-        [{covered: true, mine: true, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: true, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: true, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}]
-      ];
-      expect(checkNeighbors(gameBoard, [1,1])[1][1].value).toBe(8);
-    })
-
-    it("should count all neighbor mines", ()=>{
-      const gameBoard = [
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: true, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
-      ];
-
-      // Test start 1,1
-      let board = checkNeighbors(gameBoard, [1,1]);
-      expect(board[1][1].value).toBe(5);
-      expect(board[0][0].value).toBe(0);
-      expect(board[2][0].value).toBe(0);
-      expect(board[2][2].value).toBe(0);
-
-      // Test start 0,0
-      board = checkNeighbors(gameBoard, [0,0]);
-      expect(board[0][0].value).toBe(2);
-      expect(board[2][0].value).toBe(0);
-      expect(board[2][2].value).toBe(0);
-      expect(board[1][1].value).toBe(0);
-
-      // Test start 2,0
-      board = checkNeighbors(gameBoard, [2,0])
-      expect(board[2][0].value).toBe(2);
-      expect(board[2][2].value).toBe(0);
-      expect(board[1][1].value).toBe(0);
-      expect(board[0][0].value).toBe(0);
-
-      // Test start 2,2
-      board = checkNeighbors(gameBoard, [2,2])
-      expect(board[2][2].value).toBe(2);
-      expect(board[1][1].value).toBe(0);
-      expect(board[0][0].value).toBe(0);
-      expect(board[2][0].value).toBe(0);
-
-    })
-
-    it("should update direct adjacent neighbors and subsequent direct adjacents", ()=>{
-      const gameBoard = [
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}],
         [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
+        [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: false, value: 0}],
+        [{covered: true, mine: true, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
       ];
 
-      let board = checkNeighbors(gameBoard, [0,0])
-      expect(board[0][0].value).toBe(1);
-      expect(board[1][0].value).toBe(2);
-      expect(board[1][1].value).toBe(4);
-      expect(board[2][0].value).toBe(1);
-      expect(board[2][2].value).toBe(0);
-    })
-
-    it("should uncover all 'checked' non-mine tiles", ()=>{
-      const gameBoard = [
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
-        [{covered: true, mine: false, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
-      ];
-
-      let board = checkNeighbors(gameBoard, [0,0])
+      let board = checkNeighbors(setValues(gameBoard), [0,0])
       expect(board[0][0].covered).toBe(false);
+      expect(board[0][1].covered).toBe(false);
+      expect(board[0][2].covered).toBe(true);
+
       expect(board[1][0].covered).toBe(false);
       expect(board[1][1].covered).toBe(false);
-      expect(board[2][0].covered).toBe(false);
+      expect(board[1][2].covered).toBe(true);
+
+      expect(board[2][0].covered).toBe(true);
+      expect(board[2][1].covered).toBe(true);
       expect(board[2][2].covered).toBe(true);
     })
 
