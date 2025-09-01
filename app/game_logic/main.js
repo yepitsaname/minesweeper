@@ -56,7 +56,6 @@ export function setValues (board){
   let state = JSON.parse(JSON.stringify(board));
 
   const fn = (start_row,start_col)=>{
-    state[start_row][start_col].covered = true;
     if(state[start_row][start_col].mine){return}
     for(let row = start_row - 1; row <= start_row + 1; row++ ){
       if( row < 0 || row >= state.length ){ continue }
@@ -116,6 +115,22 @@ export function checkNeighbors(board, start) {
 
   // Begin tile checking recursion and return the board state
   fn(...start);
+  return state;
+}
+
+/**
+ * @param {Board} board
+ * @returns {Board}
+ */
+export function resetBoard(board){
+  // Force deep copy of board
+  let state = JSON.parse(JSON.stringify(board));
+
+  state.forEach(row=>row.forEach(col=>{
+    col.covered=true;
+    col.mine=false;
+    col.value=0;
+  }));
   return state;
 }
 

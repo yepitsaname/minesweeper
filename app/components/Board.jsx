@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Tile from "./Tile";
 import Menu from "./Menu";
-import { getUncoveredMineCount, getUncoveredTileCount, setMines, setValues } from "../game_logic/main";
+import { resetBoard, getUncoveredMineCount, getUncoveredTileCount, setMines, setValues } from "../game_logic/main";
 import '../css/Board.css';
 
 /**
@@ -17,7 +17,12 @@ export default function Board({col, row, mines}){
   const [hitMine, setHitMine] = useState(false);
   const [gameOver, setGameOver] = useState(true);
 
-  useEffect(()=>{ setTiles(setValues(setMines(tiles,mines))) },[gameOver])
+  useEffect(()=>{
+    if(gameOver){return}
+    let board = setValues(setMines(resetBoard(tiles),mines));
+    setTiles([[]]);
+    setTiles(board);
+  },[gameOver])
 
   useEffect(()=>{
     setUncoveredSquares(getUncoveredTileCount(tiles));
