@@ -61,6 +61,8 @@ describe("Game Board Tests", () => {
         const menu = screen.getByText('You Lost!');
         expect(menu).toBeInTheDocument();
       })
+
+      it("should not have a menu while the game is running")
     })
   })
 

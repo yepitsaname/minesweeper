@@ -17,7 +17,7 @@ export default function Board({col, row, mines}){
   const [hitMine, setHitMine] = useState(false);
   const [gameOver, setGameOver] = useState(true);
 
-  useEffect(()=>{ setTiles(setValues(setMines(tiles,mines))) },[])
+  useEffect(()=>{ setTiles(setValues(setMines(tiles,mines))) },[gameOver])
 
   useEffect(()=>{
     setUncoveredSquares(getUncoveredTileCount(tiles));
@@ -30,7 +30,7 @@ export default function Board({col, row, mines}){
   },[uncoveredSquares,hitMine])
 
   return (
-    <div title="board">
+    <div title="board" className="board">
       {tiles.map((row, row_id) => {
         return (
           <div key={row_id} className="row">
@@ -40,7 +40,12 @@ export default function Board({col, row, mines}){
       })}
       {gameOver == true ?
         (<div title="board mask" className="mask">
-          { uncoveredSquares == 0 ? <Menu state={0} /> : !hitMine ? <Menu state={1} /> : <Menu state={2} />}
+          {
+            uncoveredSquares == 0 ?
+            <Menu state={0} reset={setGameOver} /> :
+            !hitMine ? <Menu state={1} reset={setGameOver} /> :
+            <Menu state={2} reset={setGameOver} />
+          }
         </div>) :
         <></>
       }
