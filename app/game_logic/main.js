@@ -56,6 +56,7 @@ export function setValues (board){
   let state = JSON.parse(JSON.stringify(board));
 
   const fn = (start_row,start_col)=>{
+    state[start_row][start_col].covered = true;
     if(state[start_row][start_col].mine){return}
     for(let row = start_row - 1; row <= start_row + 1; row++ ){
       if( row < 0 || row >= state.length ){ continue }
