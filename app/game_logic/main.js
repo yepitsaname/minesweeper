@@ -142,7 +142,7 @@ export function getUncoveredTileCount(board){
 }
 
 /**
- * Takes in a given game board and returns the amount of uncovered spaces
+ * Takes in a given game board and returns the amount of uncovered mine spaces
  * @param {Board} board
  * @returns {Number}
  */
