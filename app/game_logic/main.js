@@ -1,21 +1,21 @@
 // Type Definitions
 /**
+ * A tile that contains all the required game data for minesweeper
  * @typedef {Object} Tile
  * @property {Boolean} covered
  * @property {Boolean} mine
  * @property {Number} value
- * @param {Number} [odds=0.5]
- */
+*/
 /**
  * @typedef {Array<Array<Tile>>} Board
- */
+*/
 
 // Functions
 /**
  * Takes in a given board and places mines randomly. Returns the mined board.
  * @param {Board} board
  * @param {Number} totalMines
- * @param {CallableFunction} setter
+ * @param {Number} [odds=0.5]
  * @returns {undefined}
  */
 export function setMines (board, totalMines, odds=0.2) {
