@@ -10,7 +10,7 @@ import '../css/Board.css';
  */
 export default function Board({col, row, mines}){
   const [tiles, setTiles] = useState(new Array(row).fill(
-    new Array(col).fill({covered: false, mine: false, value: 0})
+    new Array(col).fill({covered: true, mine: false, value: 0})
   ));
 
   useEffect(()=>{ setTiles(setValues(setMines(tiles,mines))) },[])

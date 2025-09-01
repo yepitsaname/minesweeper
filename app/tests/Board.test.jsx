@@ -3,7 +3,6 @@ import { userEvent } from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import Board from "../components/Board";
 import Tile from "../components/Tile";
-import { setMines } from "../game_logic/main";
 
 describe("Game Board Tests", () => {
 
@@ -39,9 +38,6 @@ describe("Game Board Tests", () => {
         expect(tiles.length).toBe(54);
       })
     })
-    // describe("Should correctly reveal all adjacent tiles from clicked non-mine tile", () => {
-    //   render(<Board />)
-    // })
   })
 
   describe("Tile Display and Functions", () => {

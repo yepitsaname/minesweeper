@@ -1,5 +1,7 @@
-import Board from '../components/Board'
-import './App.css'
+import Board from '../components/Board';
+import Scoreboard from '../components/Scoreboard';
+import Menu from '../components/Menu';
+import './App.css';
 
 export default function App() {
 
