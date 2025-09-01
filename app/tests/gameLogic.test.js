@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { setMines, checkNeighbors, revealBoard, setValues, getUncoveredTileCount } from "../game_logic/main.js"
+import {
+  setMines, checkNeighbors, revealBoard,
+  setValues, getUncoveredTileCount, getUncoveredMineCount
+ } from "../game_logic/main.js"
 
 describe("Main Game Logic Suite", ()=>{
   describe("Logic: getUncoveredTileCount", ()=>{
@@ -17,6 +20,24 @@ describe("Main Game Logic Suite", ()=>{
       ];
       let result = getUncoveredTileCount(checkNeighbors(setValues(gameBoard), [0,0]));
       expect(result).toBe(4);
+    })
+  })
+
+  describe("Logic: getUncoveredMineCount", ()=>{
+    it("should return a number", ()=>{
+      let result = getUncoveredMineCount([[{covered: true, mine: true, value: 0}]])
+      expect(typeof result == 'number').toBe(true);
+      expect(result).toBe(0);
+    })
+
+    it("should return the correct number of uncovered tiles for a larger board", ()=>{
+      const gameBoard = [
+        [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: true, value: 0}],
+        [{covered: true, mine: false, value: 0},{covered: true, mine: false, value: 0},{ covered: true, mine: false, value: 0}],
+        [{covered: true, mine: true, value: 0},{covered: true, mine: true, value: 0},{ covered: true, mine: false, value: 0}]
+      ];
+      let result = getUncoveredMineCount(checkNeighbors(setValues(gameBoard), [2,0]));
+      expect(result).toBe(1);
     })
   })
 

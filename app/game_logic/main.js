@@ -140,3 +140,14 @@ export function getUncoveredTileCount(board){
     row => row.reduce((acc,item) => item.covered == false ? ++acc : acc, 0)
   ).reduce((acc,item)=> acc += item, 0)
 }
+
+/**
+ * Takes in a given game board and returns the amount of uncovered spaces
+ * @param {Board} board
+ * @returns {Number}
+ */
+export function getUncoveredMineCount(board){
+  return board.map(
+    row => row.reduce((acc,item) => item.covered == false && item.mine ? ++acc : acc, 0)
+  ).reduce((acc,item)=> acc += item, 0)
+}
