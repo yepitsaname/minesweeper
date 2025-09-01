@@ -167,3 +167,14 @@ export function getUncoveredMineCount(board){
     row => row.reduce((acc,item) => item.covered == false && item.mine ? ++acc : acc, 0)
   ).reduce((acc,item)=> acc += item, 0)
 }
+
+  /**
+   * calcMines determines how many tiles should be converted on a given board size based off of a difficulty setting
+   * @param {Number} row number of rows of a board
+   * @param {Number} col number of columns of a board
+   * @param {Number} difficulty percentage of board size to convert into mines
+   * @returns {number} total number of tiles to be converted into mines
+   */
+  export function calcMines(row, col, difficulty){
+    return Math.floor(row * col * difficulty);
+  }
