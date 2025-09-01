@@ -11,5 +11,8 @@ describe("Main Application Tests", () => {
       const board = screen.getByTitle("board");
       expect(board).toBeInTheDocument();
     })
+    it("Should display 'You Win' when the last tile is cleared", () => {
+
+    })
   })
 })
