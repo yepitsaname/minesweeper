@@ -49,6 +49,7 @@ describe("Game Board Tests", () => {
       it("should have a 'You Win!' when the player wins", async ()=>{
         render(<Board row={1} col={1} mines={0}/>);
         const tile = screen.getByTitle('tile');
+        await userEvent.click(screen.getByText('Start Game'))
         await userEvent.click(tile);
         const menu = screen.getByText('You Won!');
         expect(menu).toBeInTheDocument();
@@ -56,6 +57,7 @@ describe("Game Board Tests", () => {
 
       it("should have a 'You Lost!' when the player loses", async ()=>{
         render(<Board row={1} col={1} mines={1}/>);
+        await userEvent.click(screen.getByText('Start Game'))
         const tile = screen.getByTitle('tile');
         await userEvent.click(tile);
         const menu = screen.getByText('You Lost!');
@@ -105,6 +107,7 @@ describe("Game Board Tests", () => {
 
       it("should reveal the non-mine tile when clicked", async () => {
         render(<Board row={1} col={1} mines={0} />);
+        await userEvent.click(screen.getByText('Start Game'))
         let tile = screen.getByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
@@ -113,7 +116,8 @@ describe("Game Board Tests", () => {
 
       it("should reveal the mine tile when clicked", async () => {
         render(<Board row={1} col={1} mines={1} />);
-        let tile = screen.getByTitle("tile");
+        await userEvent.click(screen.getByText('Start Game'))
+        let tile = await screen.findByTitle("tile");
         await userEvent.click(tile);
         expect(tile.classList.contains('covered')).toBe(false);
         expect(tile.classList.contains('mine')).toBe(true);
